@@ -73,29 +73,3 @@
 | dbg         | R          | debug (print data, only in simulator) | 0A 0r 00 00 |
 | halt        |            | halt CPU                              | 0A 00 00 00 |
 | nop         |            | no operation                          |             |
-
-
-## Flags
-
-| Flag | Description                                  |
-| ---- | -------------------------------------------- |
-| S    | set if result (two's complement) is negative |
-| Z    | set if result is zero                        |
-| C    | set if result did not fit in the register    |
-
-
-## Registers
-
-There may not be any registers with the names 0000 (0) and 1111 (F).
-
-| Register | Description     | Bin  | Hex |
-| -------- | --------------- | ---- | --- |
-| pc       | program counter | 0001 | 1   |
-| sp       | stack pointer   | 0010 | 2   |
-| a        |                 | 0011 | 3   |
-| b        |                 | 0100 | 4   |
-| c        |                 | 0101 | 5   |
-| d        |                 | 0110 | 6   |
-| e        |                 | 0111 | 7   |
-| f        |                 | 1000 | 8   |
-| g        |                 | 1001 | 9   |
