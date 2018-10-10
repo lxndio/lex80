@@ -13,7 +13,7 @@ macro_rules! vec_of_strings {
 
 pub struct Assembler {
     src_file: String,
-    tmp_file: String,
+    output_file: String,
     program: Vec<u8>,
     instructions: Vec<Instruction>,
     labels: HashMap<String, u16>,
@@ -21,10 +21,10 @@ pub struct Assembler {
 }
 
 impl Assembler {
-    pub fn new(src_file: String, instructions: Vec<Instruction>) -> Assembler {
+    pub fn new(src_file: String, output_file: String, instructions: Vec<Instruction>) -> Assembler {
         Assembler {
             src_file: src_file,
-            tmp_file: "C:\\Users\\korni\\Dateiablage\\_TEMP\\l80tests\\assembled.tmp".to_string(),  // TODO change to src_file path and name + .tmp or .out ending or something
+            output_file: output_file,
             program: Vec::new(),
             instructions: instructions,
             labels: HashMap::new(),
@@ -32,11 +32,12 @@ impl Assembler {
         }
     }
 
-    pub fn assemble(&mut self) -> Result<()> {
+    pub fn assemble(&mut self, verbose: bool) -> Result<()> {
         // Define register list
         let register_list: Vec<String> = vec_of_strings!("pc", "sp", "a", "b", "c", "d", "e", "f", "g");
 
         // Load file
+        println!("=> Loading input file...");
         let file = File::open(&self.src_file)?;
 
         // Clear assembled program vector and set assembled to false
@@ -46,6 +47,7 @@ impl Assembler {
         let mut current_address: u16 = 0;
 
         // Read file and assemble the code
+        println!("=> Assembling code...");
         for line in BufReader::new(file).lines() {
             let line_str = match line {
                 Ok(l)   => l,
@@ -77,7 +79,7 @@ impl Assembler {
                 i += 1;
             }
 
-            println!("Assembling command: {:?}", line_parts[i].to_string());
+            verbose_println(verbose, format!("Assembling command: {:?}", line_parts[i].to_string()));
 
             // Check if instruction exists
             if !Assembler::instruction_exists(&self, line_parts[i].to_string()) {
@@ -112,7 +114,7 @@ impl Assembler {
                         None    => panic!("hi ... couldn't possibly fail here, whatever..."),
                     };
 
-                    println!("Register: {:?}, number: {:b}", line_parts[j], arr_num);
+                    verbose_println(verbose, format!("Register: {:?}, number: {:b}", line_parts[j], arr_num));
 
                     instr_params.push(arr_num);
 
@@ -126,7 +128,7 @@ impl Assembler {
                         Err(e) => panic!("hi ... number was greater than 255 (8 bit) {:?}", e),
                     };
 
-                    println!("Line part: {:?}", line_part_u8);
+                    verbose_println(verbose, format!("Line part: {:?}", line_part_u8));
 
                     instr_params.push(0b1010);
 
@@ -153,7 +155,7 @@ impl Assembler {
         }
 
         // Save program to tmp_file
-        let mut file_out = File::create(&self.tmp_file)?;
+        let mut file_out = File::create(&self.output_file)?;
 
         for byte in &self.program {
             file_out.write(&[*byte])?;
@@ -195,4 +197,8 @@ impl Assembler {
 
         return None;
     }
+}
+
+fn verbose_println(verbose: bool, msg: String) {
+    if verbose { println!("{}", msg) }
 }

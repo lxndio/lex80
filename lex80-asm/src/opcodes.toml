@@ -1,0 +1,29 @@
+[load.xy]
+instruction = "ld"
+parameters = ["x", "y"]
+opcode = ["01", "xy", "00", "00"]
+
+[load.xa]
+instruction = "ld"
+parameters = ["x", "a"]
+opcode = ["01", "0x", "aa", "00"]
+
+[load.xv]
+instruction = "ld"
+parameters = ["x", "v"]
+opcode = ["01", "x0", "vv", "00"]
+
+[add]
+instruction = "add"
+parameters = ["x", "y"]
+opcode = ["02", "00", "xy", "00"]
+
+[debug]
+instruction = "dbg"
+parameters = ["x"]
+opcode = ["0A", "0x", "00", "00"]
+
+[halt]
+instruction = "halt"
+parameters = []
+opcode = ["0A", "01", "00", "00"]

@@ -3,8 +3,7 @@ extern crate clap;
 mod assembler;
 mod instruction;
 
-use std::fs::File;
-use std::io::{BufRead, BufReader, Result};
+use std::io::Result;
 
 use clap::{Arg, App};
 
@@ -26,42 +25,42 @@ fn main() {
             .help("Sets the .l80 file to assemble")
             .required(true)
             .index(1))
+        .arg(Arg::with_name("OUTPUT")
+            .help("Sets the .out file containing the assembled opcodes")
+            .required(true)
+            .index(2))
         .get_matches();
 
     let verbose_mode = args.is_present("verbose");
     let input_file = args.value_of("INPUT").unwrap();
+    let output_file = args.value_of("OUTPUT").unwrap();
 
-    println!("{:?}", verbose_mode);
-
-    let instructions: Vec<Instruction> = match generate_instructions() {
+    let instructions: Vec<Instruction> = match generate_instructions(verbose_mode) {
         Ok(i)   => i,
         Err(e)  => panic!("Error while generation instructions: {:?}", e),
     };
 
-    let mut assembler: Assembler = Assembler::new(input_file.to_string(), instructions);
+    let mut assembler: Assembler = Assembler::new(input_file.to_string(), output_file.to_string(), instructions);
 
-    assembler.assemble();
+    assembler.assemble(verbose_mode);
 }
 
-fn generate_instructions() -> Result<Vec<Instruction>> {
+fn generate_instructions(verbose: bool) -> Result<Vec<Instruction>> {
     let mut res: Vec<Instruction> = Vec::new();
 
-    let file = File::open("C:\\Users\\korni\\Dateiablage\\_TEMP\\l80tests\\opcodes.db".to_string())?; // TODO change
+    println!("=> Loading instructions...");
 
-    for line in BufReader::new(file).lines() {
-        let line_str = match line {
-            Ok(l)   => l,
-            Err(e)  => panic!("Error while parsing line. {:?}", e),
-        };
+    let opcodes = include_str!("opcodes.l80op");
 
+    for line in opcodes.lines() {
         // Check if line has characters (if not, skip the line)
-        if line_str.len() == 0 {
+        if line.len() == 0 {
             continue;
         }
 
-        println!("Adding opcode: {:?}", line_str);
+        verbose_println(verbose, format!("Adding opcode: {:?}", line));
 
-        let line_parts: Vec<&str> = line_str.split_whitespace().collect::<Vec<&str>>();
+        let line_parts: Vec<&str> = line.split_whitespace().collect::<Vec<&str>>();
 
         let mut parameters: Vec<Parameter> = Vec::new();
         for i in 1..3 {
@@ -76,7 +75,7 @@ fn generate_instructions() -> Result<Vec<Instruction>> {
 
         let mut opcode_parts: Vec<OpcodePart> = Vec::new();
         for i in 3..line_parts.len() {
-            println!("Line part: {:?}", line_parts[i]);
+            verbose_println(verbose, format!("Line part: {:?}", line_parts[i]));
             opcode_parts.push(match line_parts[i] {
                 "rr"       => OpcodePart::RegisterDouble,
                 "r0"       => OpcodePart::RegisterMSB,
@@ -99,4 +98,8 @@ fn generate_instructions() -> Result<Vec<Instruction>> {
     }
     
     return Ok(res);
+}
+
+fn verbose_println(verbose: bool, msg: String) {
+    if verbose { println!("{}", msg) }
 }
