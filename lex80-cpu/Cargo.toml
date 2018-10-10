@@ -1,0 +1,6 @@
+[package]
+name = "lex80-cpu"
+version = "0.1.0"
+authors = ["Alexander Korn <alexander@korn-online.org>"]
+
+[dependencies]
