@@ -1,0 +1,2 @@
+[workspace]
+members = ["lex80-asm", "lex80-cpu"]
