@@ -1,19 +1,44 @@
+extern crate clap;
+
 mod assembler;
 mod instruction;
 
 use std::fs::File;
 use std::io::{BufRead, BufReader, Result};
 
+use clap::{Arg, App};
+
 use assembler::*;
 use instruction::*;
 
+const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const AUTHORS: &'static str = env!("CARGO_PKG_AUTHORS");
+
 fn main() {
+	let args = App::new("Lex80 Assembler")
+						  .version(VERSION)
+						  .author(AUTHORS)
+						  .arg(Arg::with_name("verbose")
+						  	   .short("v")
+						  	   .long("verbose")
+						  	   .help("Activates verbose mode"))
+						  .arg(Arg::with_name("INPUT")
+						  	   .help("Sets the .l80 file to assemble")
+						  	   .required(true)
+						  	   .index(1))
+						  .get_matches();
+
+	let verbose_mode = args.is_present("verbose");
+	let input_file = args.value_of("INPUT").unwrap();
+
+	println!("{:?}", verbose_mode);
+
 	let instructions: Vec<Instruction> = match generate_instructions() {
 		Ok(i)	=> i,
 		Err(e)	=> panic!("Error while generation instructions: {:?}", e),
 	};
 
-	let mut assembler: Assembler = Assembler::new("C:\\Users\\korni\\Dateiablage\\_TEMP\\l80tests\\test.l80".to_string(), instructions);
+	let mut assembler: Assembler = Assembler::new(input_file.to_string(), instructions);
 
 	assembler.assemble();
 }
@@ -21,7 +46,7 @@ fn main() {
 fn generate_instructions() -> Result<Vec<Instruction>> {
 	let mut res: Vec<Instruction> = Vec::new();
 
-	let file = File::open("C:\\Users\\korni\\Dateiablage\\_TEMP\\l80tests\\opcodes.db".to_string())?;
+	let file = File::open("C:\\Users\\korni\\Dateiablage\\_TEMP\\l80tests\\opcodes.db".to_string())?; // TODO change
 
 	for line in BufReader::new(file).lines() {
 		let line_str = match line {

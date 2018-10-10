@@ -27,7 +27,7 @@
 **Increasing/Decreasing:**
 
 | Instruction | Parameters | Description                | Opcode      |
-| ----------- | ---------- | --------------------- ---- | ----------- |
+| ----------- | ---------- | -------------------------- | ----------- |
 | inc         | X          | increase register X by one | 01 00 0x 00 |
 | dec         | X          | decrease register X by one | 01 00 x0 00 |
 
@@ -70,6 +70,6 @@
 
 | Instruction | Parameters | Description                           | Opcode      |
 | ----------- | ---------- | ------------------------------------- | ----------- |
-| dbg         | R          | debug (print data, only in simulator) | 0A 0r 00 00 |
+| dbg         | X          | debug (print data, only in simulator) | 0A 0x 00 00 |
 | halt        |            | halt CPU                              | 0A 00 00 00 |
 | nop         |            | no operation                          |             |
