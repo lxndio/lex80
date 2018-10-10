@@ -3,6 +3,9 @@
 
 #![allow(dead_code)]
 
+use std::fs::File;
+use std::io::{Read, Result};
+
 use bit::*;
 
 // TODO make memory variable in size
@@ -40,6 +43,20 @@ impl Memory {
         }
 
         return None;
+    }
+
+    pub fn load_from_file(&mut self, input_file: String, starting_addr: usize) -> Result<()> {
+        let file = File::open(input_file)?;
+
+        let mut current_addr: usize = starting_addr;
+
+        for byte in file.bytes() {
+            &self.set(current_addr, byte.unwrap());
+
+            current_addr += 8;
+        }
+
+        return Ok(());
     }
 
     pub fn print(&self, starting_addr: usize, blocks: usize) -> bool {
