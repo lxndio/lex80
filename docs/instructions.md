@@ -2,69 +2,52 @@
 
 ## Load instructions
 
-| Instruction | Parameters |
-| ----------- | ---------- |
-| ld          | A, B       |
+| Instruction | Parameters | Description                        | Opcode      |
+| ----------- | ---------- | ---------------------------------- | ----------- |
+| ld          | X, Y       | load from register Y to register X | 01 xy 00 00 |
+| ld          | X, A       | load from address A to register X  | 01 0x aa aa |
+| ld          | X, V       | load value V to register X         | 01 x0 vv 00 |
 
-**A can be:**
-
-- Register
-
-**B can be:**
-
-- Value: $1234
-- Register
-- Address
-- Label
-
-**Opcodes:**
-
-| Opcode      | Description                        |
-| ----------- | ---------------------------------- |
-| 01 xy 00 00 | load from register Y to register X |
-| 01 0r aa aa | load from address to register      |
-| 01 r0 vv 00 | load value to register             |
-
-### Arithmetical instructions
+## Arithmetical instructions
 
 **Adding:**
 
-| Instruction | Parameters | Opcode      |
-| ----------- | ---------- | ----------- |
-| add         | R, R       | 02 00 rr 00 |
-| adc         | R, R       | 02 01 rr 00 |
+| Instruction | Parameters | Description                  | Opcode      |
+| ----------- | ---------- | ---------------------------- | ----------- |
+| add         | X, Y       | add register Y to register X | 02 00 xy 00 |
+| adc         | X, Y       |                              | 02 01 xy 00 |
 
 **Subtracting:**
 
-| Instruction | Parameters | Opcode      |
-| ----------- | ---------- | ----------- |
-| sub         | R, R       | 03 02 rr 00 |
-| sbc         | R, R       | 03 03 rr 00 |
+| Instruction | Parameters | Description                         | Opcode      |
+| ----------- | ---------- | ----------------------------------- | ----------- |
+| sub         | X, Y       | subtract register Y from register X | 03 02 xy 00 |
+| sbc         | X, Y       |                                     | 03 03 xy 00 |
 
 **Increasing/Decreasing:**
 
-| Instruction | Parameters | Opcode      |
-| ----------- | ---------- | ----------- |
-| inc         | R          | 01 00 0r 00 |
-| dec         | R          | 01 00 r0 00 |
+| Instruction | Parameters | Description                | Opcode      |
+| ----------- | ---------- | --------------------- ---- | ----------- |
+| inc         | X          | increase register X by one | 01 00 0x 00 |
+| dec         | X          | decrease register X by one | 01 00 x0 00 |
 
-### Bitwise instructions
+## Bitwise instructions
 
-| Instruction | Parameters | Opcode      |
-| ----------- | ---------- | ----------- |
-| and         |            |             |
-| or          |            |             |
-| xor         |            |             |
-| not         |            |             |
+| Instruction | Parameters | Description | Opcode      |
+| ----------- | ---------- | ----------- | ----------- |
+| and         | X, Y       |             | 04 00 xy 00 |
+| or          | X, Y       |             | 04 01 xy 00 |
+| xor         | X, Y       |             | 04 02 xy 00 |
+| not         | X          |             | 04 03 0x 00 |
 
-### Stack instructions
+## Stack instructions
 
-| Instruction | Parameters | Opcode      |
-| ----------- | ---------- | ----------- |
-| push        |            |             |
-| pop         |            |             |
+| Instruction | Parameters | Description | Opcode      |
+| ----------- | ---------- | ----------- | ----------- |
+| push        |            |             |             |
+| pop         |            |             |             |
 
-### Compare and jump instructions
+## Compare and jump instructions
 
 | Instruction | Parameters | Description | Opcode      |
 | ----------- | ---------- | ----------- | ----------- |
@@ -83,7 +66,7 @@
 | call        |            | pushes the address of the following instruction to the stack and jumps |             |
 | ret         |            | pops an address from the top of the stack and jumps there              |             |
 
-### Debug instructions
+## Debug instructions
 
 | Instruction | Parameters | Description                           | Opcode      |
 | ----------- | ---------- | ------------------------------------- | ----------- |
