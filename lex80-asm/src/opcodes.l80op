@@ -2,7 +2,7 @@ ld      r r     01 rr 00 00
 ld      r a     01 0r aa aa
 ld      r v     01 r0 vv 00
 add     r r     02 00 rr 00
-sub     r r     03 02 rr 00
+sub     r r     02 10 rr 00
 inc     r 0     01 00 0r 00
 dec     r 0     01 00 r0 00
 and     r r     04 00 rr 00

@@ -39,14 +39,20 @@ fn main() {
     let mut reg: Registers = Registers::new();
 
     // Fill memory with input file at location 0x0000
-    mem.load_from_file(input_file.to_string(), 0x0000);
+    mem.load_from_file(input_file.to_string(), 0x0000).expect("Memory load failure");
 
     // Run the CPU
-    let mut running: bool = true;
+    loop {
+        if verbose_mode { println!("PC: {:x?}", reg.get_16bit(1).unwrap()) }
 
-    while running {
-        run_instruction(instruction_to_array(&mem, reg.get(1).unwrap() as usize), &mut mem, &mut reg);
+        if !run_instruction(instruction_to_array(&mem, reg.get_16bit(1).unwrap() as usize), &mut mem, &mut reg, verbose_mode) {
+            break;
+        }
+
+        // Add 32 to the program counter register
+        let current_pc: u16 = reg.get_16bit(1).unwrap();
+        reg.set_16bit(1, current_pc + 32);
     }
 
-    mem.print(0, 10);
+    // mem.print(0, 10);
 }
