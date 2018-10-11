@@ -21,8 +21,8 @@
 
 | Instruction | Parameters | Description                         | Opcode      |
 | ----------- | ---------- | ----------------------------------- | ----------- |
-| sub         | X, Y       | subtract register Y from register X | 03 02 xy 00 |
-| sbc         | X, Y       |                                     | 03 03 xy 00 |
+| sub         | X, Y       | subtract register Y from register X | 02 10 xy 00 |
+| sbc         | X, Y       |                                     | 02 11 xy 00 |
 
 **Increasing/Decreasing:**
 
