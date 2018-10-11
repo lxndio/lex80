@@ -72,7 +72,7 @@ pub fn run_instruction(instruction: [u8; 8], memory: &mut Memory, registers: &mu
 }
 
 pub fn instruction_to_array(memory: &Memory, address: usize) -> [u8; 8] {
-	let mut res: [u8; 8];
+	let mut res: [u8; 8] = [0; 8];
 
 	for i in 0..7 {
 		res[i] = memory.get(address + (i*8)).unwrap();
