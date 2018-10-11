@@ -14,6 +14,7 @@ const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 const AUTHORS: &'static str = env!("CARGO_PKG_AUTHORS");
 
 fn main() {
+    // Handle command line arguments
     let args = App::new("Lex80 Assembler")
         .version(VERSION)
         .author(AUTHORS)
