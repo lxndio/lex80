@@ -41,6 +41,10 @@ fn main() {
         Err(e)  => panic!("Error while generation instructions: {:?}", e),
     };
 
+    for i in &instructions {
+        println!("{:?}", i);
+    }
+
     let mut assembler: Assembler = Assembler::new(input_file.to_string(), output_file.to_string(), instructions);
 
     assembler.assemble(verbose_mode);
@@ -70,7 +74,7 @@ fn generate_instructions(verbose: bool) -> Result<Vec<Instruction>> {
                 "a" => Parameter::Address,
                 "v" => Parameter::Value,
                 "0" => Parameter::Null,
-                _   => panic!("Found wrong parameter type in opcodes.db"),
+                _   => panic!("Found wrong parameter type in opcodes.l80op"),
             });
         }
 

@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub enum Parameter {
     Register,
     Address,
@@ -5,6 +6,7 @@ pub enum Parameter {
     Null,
 }
 
+#[derive(Debug)]
 pub enum OpcodePart {
     Command(u8),
     RegisterDouble,
@@ -15,6 +17,7 @@ pub enum OpcodePart {
     Null,
 }
 
+#[derive(Debug)]
 pub struct Instruction {
     name: String,
     parameters: Vec<Parameter>,

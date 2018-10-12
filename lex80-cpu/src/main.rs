@@ -1,6 +1,5 @@
 extern crate clap;
 
-mod bit;
 mod memory;
 mod registers;
 mod instructions;

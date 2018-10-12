@@ -6,8 +6,6 @@
 use std::fs::File;
 use std::io::{Read, Result};
 
-use bit::*;
-
 // TODO make memory variable in size
 
 pub struct Memory {
